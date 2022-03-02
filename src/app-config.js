@@ -1,3 +1,3 @@
-let API_URL = "http://localhost:3001";
+let API_URL = "https://le-charlemagne.herokuapp.com/";
 
 module.exports = API_URL;
