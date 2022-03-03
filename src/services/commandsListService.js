@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
- 
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 
@@ -19,6 +19,15 @@ const createCommandList = async (command, dishID, quantity) => {
 const getCommandsList = async () => {
     try {
         const { data } = await axios.get(API_URL + "/commandsList");
+        return data;
+    } catch(err) {
+        toast.error(err.message);
+    }
+};
+
+const getCommandListById = async (id) => {
+    try {
+        const { data } = await axios.get(API_URL + "/commandsList/" +id);
         return data;
     } catch(err) {
         toast.error(err.message);
@@ -104,6 +113,7 @@ const deleteAllCommandsList = async (commandID) => {
 export {
     createCommandList,
     getCommandsList,
+    getCommandListById,
     getCommandListByCommand,
     getCommandListByCommandWithDish,
     getOneCommandListByDish,

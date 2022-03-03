@@ -37,6 +37,15 @@ const getUserByUsername = async (username, token) => {
     }
 }
 
+const getFirstNameByUsername = async (username) => {
+    try {
+        const { data } = await axios.get(API_URL + "/users/firstname/" + username);
+        return data;
+    } catch(err) {
+        toast.error(err.message);
+    }
+}
+
 const getUserById = async (id) => {
     try {
         const {data} = await axios.get(API_URL + "/users/" + id);
@@ -123,6 +132,7 @@ const userSignIn = async (username, password) => {
 export {
     userSignIn,
     getUserByUsername,
+    getFirstNameByUsername,
     getUserById,
     getUsers,
     getVisibleUsers,
