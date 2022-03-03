@@ -386,7 +386,7 @@ const AdminCommands = () => {
 
   // HANDLE
 
-  const handleQuantityChange = (e) => Number(e.target.value) || e.target.value === "" && setQuantity(e.target.value)
+  const handleQuantityChange = (e) => (Number(e.target.value) || e.target.value === "") && setQuantity(e.target.value)
 
   const handleCommentChange = (e) => setComment(e.target.value)
 
