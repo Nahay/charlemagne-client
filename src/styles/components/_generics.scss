@@ -449,7 +449,7 @@ input[type="time"] {
     justify-content: center;
 
     width: 700px;
-    height: 530px;
+    height: 550px;
 
     background: var(--color-black);
     border-radius: 15px;
@@ -457,20 +457,25 @@ input[type="time"] {
     .summary-items {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
 
       width: 75%;
       height: 90%;
+      
+      transition: all .3s ease;
 
       .summary-title {
-        margin: 20px 0 30px 0;
+        margin: 0px 0 30px 0;
         font-size: 30px;
+        transition: all .3s ease;
       }
 
       .summary-name {
         align-self: flex-start;
         
         margin-bottom: 20px;
+        transition: all .3s ease;
       }
 
       .summary-list {
@@ -479,6 +484,7 @@ input[type="time"] {
 
         overflow-y: scroll;
         background: var(--input-bg);
+        transition: all .3s ease;
 
         .list---box {
           display: flex;
@@ -510,6 +516,8 @@ input[type="time"] {
             justify-content: center;
 
             width: 50px;
+
+            transition: all .3s ease;
           }
           
         }
@@ -517,18 +525,21 @@ input[type="time"] {
 
       .summary-confirmation {
         align-self: flex-start;
+
         margin-top: 10px;
+        transition: all .3s ease;
       }
 
       .summary-total {
         align-self: flex-end;
         margin-top: 20px;
+        transition: all .3s ease;
       }
 
       .input-btn {
         justify-self: flex-end;
         margin-top: 20px;
-
+        
         input {
           color: white;
           background: $color-primary;
@@ -548,7 +559,65 @@ input[type="time"] {
     background:rgba(43, 43, 43, 0.8);
     backdrop-filter: blur(10px);
   }
-  
+
+  @media(max-width: 740px){
+    .summary-content {
+      margin: 0 50px 0 50px;
+
+      height: 520px;
+      .summary-items {
+        .summary-title {
+          font-size: 26px;
+        }
+
+        .summary-name,
+        .summary-confirmation,
+        .summary-total {
+          font-size: 14px;
+        }
+      }
+    }   
+  }
+
+  @media(max-width: 580px){
+    .summary-content {
+
+      height: 520px;
+      .summary-items {
+        .summary-title {
+          font-size: 22px;
+        }
+
+        .summary-name,
+        .summary-confirmation,
+        .summary-total {
+          font-size: 13px;
+        }
+        .summary-list {
+          height: 150px;
+        }
+      }
+    }   
+  }
+
+  @media(max-width: 580px){
+    .summary-content {
+      .summary-items {
+        .summary-title {
+          font-size: 18px;
+        }
+
+        .summary-name,
+        .summary-confirmation,
+        .summary-total {
+          font-size: 12px;
+        }
+        .summary-list {
+          height: 150px;
+        }
+      }
+    }   
+  }
 }
 
 // --------------- DISHSUM BOX -----------------------------
