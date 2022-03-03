@@ -224,7 +224,7 @@ const PassCommand = () => {
           {dateComment !== "" && <p>{dateComment}</p>}
         </div>
         <div className="container__name">
-          <p className="fixed-text name">{name} {firstname}</p>
+          <p className="fixed-text name">{firstname} {name}</p>
         </div>
         <OrderTable data={data} setData={setData}/>
         <div className="container__comm-others">
