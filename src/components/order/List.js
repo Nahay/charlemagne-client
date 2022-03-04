@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import moment from "moment";
 import "moment/locale/fr";
-
-import {getNbRByDate} from '../../services/dishesService';
-
 
 const List = ({dateList, onDateChange, rightRef}) => {
 
