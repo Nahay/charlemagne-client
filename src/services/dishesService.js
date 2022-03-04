@@ -153,6 +153,31 @@ const getNbRByDate = async (date) => {
     }
 };
 
+const getDatesAndNb = async () => {
+    try {
+        const { data } = await axios.get(API_URL + "/dish-date/date/");
+        let nbDish = [];
+
+        data.forEach(d => {
+            if(nbDish.length === 0) nbDish.push({dateC: d.dateC, nbR: d.numberRemaining});
+            else {
+                let isHere = false;
+                nbDish.forEach(n => {
+                    if(n.dateC === d.dateC) {
+                        isHere = true;
+                        n.nbR += d.numberRemaining;
+                    }
+                });
+                !isHere && nbDish.push({dateC: d.dateC, nbR: d.numberRemaining});
+            }
+        });
+        return nbDish;
+    } catch(err) {
+        toast.error(err.message);
+    }
+};
+
+
 const getDishByDateAndDish = async (dateC, idDish) => {
     try {
         const { data } = await axios.get(API_URL + "/dish-date/dateDish/" +dateC+"/"+idDish);
@@ -224,6 +249,7 @@ export {
     getDishByName,
     getCountByName,
     getDishes,
+    getDatesAndNb,
     getDishByDateAndDish,
     deleteDish,
     hideDish,
