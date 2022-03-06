@@ -29,9 +29,10 @@ const UserTemp = () => {
                     <ProtectedUserRoute exact path="/passer-commande/:date" component = {PassCommand} />
                     <Route exact path="/contact" component = {Contact} />
                     <ProtectedUserRoute exact path="/history" component = {History} />
-                    <Route exact path="/mentions-legales" component = {Home} />
-                    <Route exact path="/cgu-cgv" component = {Home} />
                     <ProtectedLoginRoute exact path="/connexion" component = {Login}/>
+
+                    {/* <Route exact path="/mentions-legales" component = {Home} />
+                    <Route exact path="/cgu-cgv" component = {Home} /> */}
 
                     <Route exact component = {PageNotFound} />
                 </Switch>

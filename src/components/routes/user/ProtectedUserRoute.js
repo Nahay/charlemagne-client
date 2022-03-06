@@ -1,17 +1,37 @@
 import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
+
 import { decodeToken } from "react-jwt";
+
+import { getUserById } from "../../../services/usersService";
 
 
 function ProtectedUserRoute({ component: Component, ...restOfProps }) {
 
-  const decodedToken = decodeToken(localStorage.getItem("userToken"));
-  
+  const history = useHistory();
+
+  const getUser = async () => {
+
+    const token = localStorage.getItem("userToken");
+    const decodedToken = decodeToken(token);
+    console.log(decodedToken);
+    
+    if (decodedToken !== null) {
+        const user = await getUserById(decodedToken._id);
+        console.log(user);
+        if (user.success) return true
+    }
+    localStorage.removeItem('userToken');
+    history.push('/');
+    return false;
+  }
+
+
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        decodedToken ? <Component {...props} /> : <Redirect to="/" />
+        getUser() && <Component {...props} />
       }
     />
   );
