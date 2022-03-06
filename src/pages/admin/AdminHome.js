@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import InputButton from '../../components/generic/InputButton';
 import TextArea from '../../components/generic/TextArea';
 
-import {getParam, updateParam} from '../../services/paramsService';
+import { getParam, updateParam } from '../../services/paramsService';
 
 
 const AdminHome = () => {
@@ -30,13 +30,9 @@ const AdminHome = () => {
 
     // HANDLE ---------------------------------------------------------------
 
-    const handleWelcomeMessage = (e) => {
-        setWelcomeMess(e.target.value);
-    }
+    const handleWelcomeMessage = (e) => setWelcomeMess(e.target.value)
 
-    const handleOrderInfo = (e) => {
-        setOrderInfo(e.target.value);
-    }
+    const handleOrderInfo = (e) => setOrderInfo(e.target.value)
 
 
     // DB -------------------------------------------------------------------

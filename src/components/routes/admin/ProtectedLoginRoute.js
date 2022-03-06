@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 
 import { decodeToken } from "react-jwt";
 
@@ -15,9 +15,9 @@ function ProtectedLoginRoute({ component: Component, ...restOfProps }) {
     const token = localStorage.getItem("adminToken");
     const decodedToken = decodeToken(token);
     
-    if(decodedToken !== null) {
+    if (decodedToken !== null) {
       const admin = await getAdminById(decodedToken._id, token);
-      if(admin.success) {
+      if (admin.success) {
         history.push('/admin/accueil');
         return true;
       }
@@ -30,7 +30,7 @@ function ProtectedLoginRoute({ component: Component, ...restOfProps }) {
     <Route
       {...restOfProps}
       render={(props) =>
-        getAdmin() ? <Component {...props} /> : <Redirect to="/admin/accueil"/>
+        getAdmin() && <Component {...props} />
       }
     />
   );

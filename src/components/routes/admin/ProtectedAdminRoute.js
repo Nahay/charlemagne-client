@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 
 import { decodeToken } from "react-jwt";
 
@@ -28,7 +28,7 @@ function ProtectedAdminRoute({ component: Component, ...restOfProps }) {
     <Route
       {...restOfProps}
       render={(props) =>
-        getAdmin() ? <Component {...props} /> : <Redirect to="/admin" />
+        getAdmin() && <Component {...props} />
       }
     />
   );

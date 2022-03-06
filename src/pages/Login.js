@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
@@ -29,7 +30,6 @@ const Login = () => {
           localStorage.setItem('userToken', si.token);
           history.push("/commander");
           const user = await getFirstNameByUsername(username);
-          console.log(user);
           toast.success("Bienvenue " + user.userFound.firstname +" !");          
         }
         else toast.error("Le nom d'utilisateur ou le mot de passe est incorrect.");
