@@ -58,7 +58,7 @@ const AdminCommands = () => {
 
   useEffect(() => {
     async function getCommandsByDate() {
-      const commands = await getCommandByDate(date);
+      const commands = await getCommandByDate(date, token);
       setCommandsList(commands);
       const visibleCommands = commands.filter((c) => c.visible);
       setVisibleCommandsList(visibleCommands);
@@ -74,7 +74,7 @@ const AdminCommands = () => {
   }
 
   const getCommandsByDate = async () => {
-    const commands = await getCommandByDate(date);
+    const commands = await getCommandByDate(date, token);
     setCommandsList(commands);
 
     const visibleCommands = commands.filter((c) => c.visible);
@@ -83,13 +83,13 @@ const AdminCommands = () => {
 
   const formatCsvData = async (e) => { 
     const dishes = await getDishByDate(e);
-    const nbDishes = await getNbOfDishByDay(e);
-    const commands = await getCommandByDate(e);
+    const nbDishes = await getNbOfDishByDay(e, token);
+    const commands = await getCommandByDate(e, token);
     
     let data = [ { columns: [], data: [] }];
 
     data[0].columns.push(
-      {title: "#", width: {wpx: 40}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
+      {title: "#", width: {wpx: 50}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
       {title: "Nom", width: {wpx: 100}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }
     );
 
@@ -125,7 +125,7 @@ const AdminCommands = () => {
           {value: i+1,  style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "thin", color: {rgb: "D4D4D4"} }, top: { style: "thin", color: {rgb: "D4D4D4"}}} }},
 
           {value: command.user.name,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }}
-      ]);
+        ]);
 
         dishes.forEach(dish => {
           let here = false;
@@ -149,9 +149,9 @@ const AdminCommands = () => {
         data[0].data[i].push(
           {value: command.timeC,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
             
-          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, left: { style: "medium", color: {rbg: "000000"}}} }},
+          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, left: { style: "thick", color: {rbg: "000000"}}} }},
           {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}} }},
-          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}} }},
+          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, right: { style: "thick", color: {rbg: "000000"}}} }},
           {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}}  }}
         );
       }
@@ -174,13 +174,7 @@ const AdminCommands = () => {
           !here && data[0].data[i].push({value: 0,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }});
         });
 
-        data[0].data[i].push(
-          {value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true} }},
-            
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, left: { style: "medium", color: {rbg: "000000"}}} }},
-          {value: ""},        
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}} }}
-        );
+        data[0].data[i].push({value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true} }});
 
         command.container ? 
           data[0].data[i].push({value: "✔", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }})
@@ -190,36 +184,35 @@ const AdminCommands = () => {
         data[0].data[i].push(
           {value: command.timeC,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }},
 
-          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true} }},
+          {value: "", style: {border: { left: { style: "thick", color: {rbg: "000000"}}}}},
+          {value: ""},
+          {value: "", style: {border: { right: { style: "thick", color: {rbg: "000000"}}}}},
 
-          {value: "", style: { border: { right: {style: "medium", color: {rgb: "000000"}}} }}
+          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { right: {style: "medium", color: {rgb: "000000"}}} }}
         );
       }
     });
     
     data[0].data.push([{value:""}]);
-    data[0].data.push([{value:""}, {value:""}]);
+    data[0].data.push([{value:"Totaux",style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { top: {style: "medium", color: {rgb: "000000"}}, bottom: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}}, right: {style: "thin", color: {rgb: "D4D4D4"}} } } }, {value:"", style: { border: { top: {style: "medium", color: {rgb: "000000"}}, bottom: {style: "medium", color: {rgb: "000000"}} } } }]);
 
     dishes.forEach((dish, i) => {
       let here = false;
       for(let j = 0; j < nbDishes.length; j++) {
         if(nbDishes[j]._id === dish.idDish._id) {
-          if(i === 0) data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
-          else data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
+          data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
           here = true;
           break;
         }
       }
 
-      if(!here) {
-        if(i === 0) data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
-        else data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
+      if(!here && commands.length > 0) {
+        data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
       }
   });
 
     if(commands.length > 0) {
-
-      data[0].data[index+2].push({value: parseInt(total + "€"), style: {numFmt: "0.00€", font: {sz: "14"}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { right: {style: "medium", color: {rgb: "000000"}},  bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}},  left: {style: "medium", color: {rgb: "000000"}}} }}, {value: ""}, {value: ""}, {value: ""}, {value: ""});
+      data[0].data[index+2].push({value: parseInt(total + "€"), style: {numFmt: "0.00€", font: {sz: "14", bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { right: {style: "medium", color: {rgb: "000000"}},  bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}},  left: {style: "thin", color: {rgb: "D4D4D4"}}} }}, {value: ""}, {value: ""}, {value: ""}, {value: ""});
     }
 
     setCsvData(data);
@@ -266,7 +259,7 @@ const AdminCommands = () => {
   // suppression de la commande (invisible)
   const handleHideCommand = async () => {
 
-    await hideCommand(currentDelete);
+    await hideCommand(currentDelete, token);
     
     getCommandsByDate();
     resetInput();
@@ -284,13 +277,13 @@ const AdminCommands = () => {
 
   // suppression d'un plat d'une commande
   const handleDeleteCommandList = async () => {
-    const cl = await getCommandListById(currentDelete);
+    const cl = await getCommandListById(currentDelete, token);
 
     await updateDishDateQtt(date, cl[0].dishID, cl[0].quantity, token);
-    await deleteCommandList(cl[0]._id);
+    await deleteCommandList(cl[0]._id, token);
 
     const remaining = commandsList.filter((c) => c._id === id)[0].list.length;
-    remaining === 1 && await deleteCommand(id);
+    remaining === 1 && await deleteCommand(id, token);
 
     getCommandsByDate();
     resetInput();
@@ -325,7 +318,7 @@ const AdminCommands = () => {
     if(emptyFields) toast.error("Veuillez sélectioner une commande avant de pouvoir enregistrer.");
 
     else {
-      await updateCommand(commandId, time, paid, container, comment, total);
+      await updateCommand(commandId, time, paid, container, comment, total, token);
 
       getCommandsByDate();
       resetInput();
@@ -359,7 +352,7 @@ const AdminCommands = () => {
       await updateDishDate(dishDate._id, dishDate.numberKitchen, numberRemaining);
 
       // update la quantité dans la command list
-      await updateQuantity(currentCommandList._id, quantity);
+      await updateQuantity(currentCommandList._id, quantity, token);
 
       setDishClicked(false);
       setQuantity("");

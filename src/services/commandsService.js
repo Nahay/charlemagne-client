@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
- 
+import { config } from './config';
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 
-const createCommand = async (user, dateC, timeC, paid, container, comment, total) => {
+const createCommand = async (user, dateC, timeC, paid, container, comment, total, token) => {
     try {
         const { data } = await axios.post(API_URL + "/commands", {
             user,
@@ -14,34 +15,34 @@ const createCommand = async (user, dateC, timeC, paid, container, comment, total
             container,
             comment,
             total
-        });
+        }, config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const getCommands = async () => {
+const getCommands = async (token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commands");
+        const { data } = await axios.get(API_URL + "/commands", config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const getVisibleCommands = async () => {
+const getVisibleCommands = async (token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commands/visible");
+        const { data } = await axios.get(API_URL + "/commands/visible", config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const getCommandByDate = async (dateC) => {
+const getCommandByDate = async (dateC, token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commands/" +dateC);
+        const { data } = await axios.get(API_URL + "/commands/" +dateC, config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
@@ -57,9 +58,9 @@ const getCommandByUser = async (user) => {
     }
 };
 
-const getNbOfDishByDay = async (dateC) => {
+const getNbOfDishByDay = async (dateC, token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commands/" +dateC);
+        const { data } = await axios.get(API_URL + "/commands/" +dateC, config(token));
         
         let nbDish = [];
 
@@ -84,7 +85,7 @@ const getNbOfDishByDay = async (dateC) => {
     }
 }
 
-const updateCommand = async (id, timeC, paid, container, comment, total) => {
+const updateCommand = async (id, timeC, paid, container, comment, total, token) => {
     try {
         await axios.patch(
             API_URL + "/commands/" +id, {
@@ -93,7 +94,7 @@ const updateCommand = async (id, timeC, paid, container, comment, total) => {
                 container,
                 comment,
                 total
-            }
+            }, config(token)
         );
         toast.success("La commande a été mise à jour !");
     } catch(err) {
@@ -101,18 +102,18 @@ const updateCommand = async (id, timeC, paid, container, comment, total) => {
     }
 };
 
-const hideCommand = async (id) => {
+const hideCommand = async (id, token) => {
     try {
-        await axios.patch(API_URL + "/commands/hide/" + id,);
+        await axios.patch(API_URL + "/commands/hide/" + id, {}, config(token));
         toast.success("La commande a été supprimée !");
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const deleteCommand = async (id) => {
+const deleteCommand = async (id, token) => {
     try {
-        await axios.delete(API_URL + "/commands/" +id);
+        await axios.delete(API_URL + "/commands/" +id, config(token));
         toast.success("La commande a été supprimée !");
     } catch(err) {
         toast.error(err.message);

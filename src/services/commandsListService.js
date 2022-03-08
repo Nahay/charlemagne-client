@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { config } from './auth';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -16,18 +17,18 @@ const createCommandList = async (command, dishID, quantity) => {
     }
 };
 
-const getCommandsList = async () => {
+const getCommandsList = async (token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commandsList");
+        const { data } = await axios.get(API_URL + "/commandsList", config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const getCommandListById = async (id) => {
+const getCommandListById = async (id, token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commandsList/" +id);
+        const { data } = await axios.get(API_URL + "/commandsList/" +id, config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
@@ -52,30 +53,30 @@ const getCommandListByCommandWithDish = async (commandID) => {
     }
 };
 
-const getOneCommandListByDish = async (dishID) => {
+const getOneCommandListByDish = async (dishID, token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commandsList/dish/" +dishID);
+        const { data } = await axios.get(API_URL + "/commandsList/dish/" +dishID, config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const getOneCommandListByDate = async (date) => {
+const getOneCommandListByDate = async (date, token) => {
     try {
-        const { data } = await axios.get(API_URL + "/commandsList/date/" +date);
+        const { data } = await axios.get(API_URL + "/commandsList/date/" +date, config(token));
         return data;
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const updateQuantity = async (id, quantity) => {
+const updateQuantity = async (id, quantity, token) => {
     try {
         await axios.patch(
             API_URL + "/commandsList/" +id, {
                 quantity
-            }
+            }, config(token)
         );
         toast.success("La quantité a été mise à jour !");
     } catch(err) {
@@ -83,27 +84,27 @@ const updateQuantity = async (id, quantity) => {
     }
 };
 
-const deleteCommandList = async (id) => {
+const deleteCommandList = async (id, token) => {
     try {
-        await axios.delete(API_URL + "/commandsList/" +id);
+        await axios.delete(API_URL + "/commandsList/" +id, config(token));
         toast.success("L'élement a été supprimé de la commande.");
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const deleteCommandListByCommand = async (commandID) => {
+const deleteCommandListByCommand = async (commandID, token) => {
     try {
-        await axios.delete(API_URL + "/commandsList/command/" +commandID);
+        await axios.delete(API_URL + "/commandsList/command/" +commandID, config(token));
         toast.success("L'élement a été supprimé de la commande.");
     } catch(err) {
         toast.error(err.message);
     }
 };
 
-const deleteAllCommandsList = async (commandID) => {
+const deleteAllCommandsList = async (commandID, token) => {
     try {
-        await axios.delete(API_URL + "/commandsList/commands/" +commandID);
+        await axios.delete(API_URL + "/commandsList/commands/" +commandID, config(token));
         toast.success("Les éléments ont été supprimés de la commande.");
     } catch(err) {
         toast.error(err.message);

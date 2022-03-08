@@ -87,7 +87,7 @@ const updateDish = async (id, name, price, desc, type, token) => {
 
 const hideDish = async (id, token) => {
     try {
-        const { data } = await axios.patch(API_URL + "/dishes/hide/" +id, config(token));
+        const { data } = await axios.patch(API_URL + "/dishes/hide/" +id, {}, config(token));
         toast.success(`Le plat ${data.name} n'est plus visible !`);
         return data.type;
     }
@@ -98,7 +98,7 @@ const hideDish = async (id, token) => {
 
 const unhideDish = async (id, token) => {
     try {
-        const { data } = await axios.patch(API_URL + "/dishes/unhide/" +id, config(token));
+        const { data } = await axios.patch(API_URL + "/dishes/unhide/" +id, {}, config(token));
         toast.success(`Le plat ${data.name} est à nouveau visible !`);
         return data.type;
     }
