@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { config } from './auth';
+import { config } from './config';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
