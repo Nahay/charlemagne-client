@@ -16,6 +16,8 @@ import {getDishes, createDishDate, getDishByDate, deleteAllDishesDate, deleteDis
 
 const AdminDates = () => {
 
+    const token = localStorage.getItem("adminToken");
+
     const ref = useRef(null);
     const box = useRef(null);
 
@@ -179,7 +181,7 @@ const AdminDates = () => {
 
         if (!haveCommand) {
             await deleteDate(date);
-            await deleteAllDishesDate(date);
+            await deleteAllDishesDate(date, token);
             await getDateList();
             onChangeDate(new Date(new Date().toDateString()).getTime());
         }
@@ -207,7 +209,7 @@ const AdminDates = () => {
                     });
 
                     if (!dishExists) {
-                        await createDishDate(date, select, nb);
+                        await createDishDate(date, select, nb, token);
                         getDishByDateList(date);
                     }
                     else toast.error("Le plat existe déjà !");
@@ -217,7 +219,7 @@ const AdminDates = () => {
                 else {
                     await createDate(date, visibility, comment, timeMin, timeMax);
                     setDateExists(true);
-                    await createDishDate(date, select, nb);
+                    await createDishDate(date, select, nb, token);
                     getDishByDateList(date);
                     getDateList();
                 }
@@ -246,7 +248,7 @@ const AdminDates = () => {
 
     const onClickDelete = async () => {
         if (currentCommandList.numberKitchen === currentCommandList.numberRemaining) {
-            await deleteDishDate(currentCommandList._id);
+            await deleteDishDate(currentCommandList._id, token);
             getDishByDateList(date);
         }
         else toast.error("Ce plat a déjà été commandé, vous ne pouvez pas le supprimer.");

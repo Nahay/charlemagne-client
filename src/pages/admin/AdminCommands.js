@@ -21,6 +21,8 @@ import { updateDishDateQtt, getDishByDateAndDish, getDishById, updateDishDate, g
 
 const AdminCommands = () => {
 
+  const token = localStorage.getItem("adminToken");
+
   const ref = useRef(null);
   const boxCommand = useRef(null);
   const boxCommandList = useRef(null);
@@ -291,7 +293,7 @@ const AdminCommands = () => {
   const handleDeleteCommandList = async () => {
     const cl = await getCommandListById(currentDelete);
 
-    await updateDishDateQtt(date, cl[0].dishID, cl[0].quantity);
+    await updateDishDateQtt(date, cl[0].dishID, cl[0].quantity, token);
     await deleteCommandList(cl[0]._id);
 
     const remaining = commandsList.filter((c) => c._id === id)[0].list.length;
