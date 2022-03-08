@@ -11,6 +11,8 @@ const AdminHome = () => {
     const [welcomeMess, setWelcomeMess] = useState("");
     const [orderInfo, setOrderInfo] = useState("");
 
+    const token = localStorage.getItem("adminToken");
+
     
     useEffect(() => {
         getSetMess();
@@ -39,12 +41,12 @@ const AdminHome = () => {
 
     const onWelcomeMessageSubmit = (e) => {
         e.preventDefault();
-        updateParam("welcome",welcomeMess);
+        updateParam("welcome",welcomeMess, token);
     }
 
     const onOrderInfoSubmit = (e) => {
         e.preventDefault();
-        updateParam("order",orderInfo);
+        updateParam("order",orderInfo, token);
     }
 
 
