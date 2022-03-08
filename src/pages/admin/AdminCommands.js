@@ -98,19 +98,17 @@ const AdminCommands = () => {
     data[0].columns.push(
       {title: "Montant        (en €)", width: {wpx: 75}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
     
-      {title: "CB", width: {wpx: 55}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
-      
-      {title: "Espèce", width: {wpx: 55}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
-
-      {title: "Chèque", width: {wpx: 55}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
-
       {title: "Boite perso", width: {wpx: 75}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } }, 
 
       {title: "Heure", width: {wpx: 75}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true},  alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } },
 
-      {title: "Commentaires", width: {wpx: 200}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
-    
-      {title: "Pmt", width: {wpx: 40}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "000000"}}, top: {style: "medium", color: {rgb: "000000"}} } } }
+      {title: "CB", width: {wpx: 55}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {left: {style: "thick", color: {rgb: "000000"}} } } },
+      
+      {title: "Espèce", width: {wpx: 55}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}, left: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
+
+      {title: "Chèque", width: {wpx: 55}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thick", color: {rgb: "0000000"}}} } }, 
+
+      {title: "Commentaires", width: {wpx: 200}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "000000"}}} } }
     );
     
     let index = 0;
@@ -139,13 +137,7 @@ const AdminCommands = () => {
           !here && data[0].data[i].push({value: 0,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }});
         });
 
-        data[0].data[i].push(
-          {value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }},
-            
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}} }}
-        );
+        data[0].data[i].push({value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }});
 
         command.container ? 
           data[0].data[i].push({value: "✔", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }})
@@ -154,10 +146,11 @@ const AdminCommands = () => {
         
         data[0].data[i].push(
           {value: command.timeC,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-
-          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-
-          {value: "", style: {border: { right: { style: "medium", color: {rbg: "000000"}}, bottom: {style: "medium", color: {rgb: "000000"}}} }},
+            
+          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, left: { style: "medium", color: {rbg: "000000"}}} }},
+          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}} }},
+          {value: "", style: {border: { bottom: {style: "thick", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}} }},
+          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}}  }}
         );
       }
       else {
@@ -182,9 +175,9 @@ const AdminCommands = () => {
         data[0].data[i].push(
           {value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true} }},
             
-          {value: ""},
+          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, left: { style: "medium", color: {rbg: "000000"}}} }},
           {value: ""},        
-          {value: ""}
+          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}} }}
         );
 
         command.container ? 
@@ -197,7 +190,7 @@ const AdminCommands = () => {
 
           {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true} }},
 
-          {value: "", style: { border: { right: {style: "medium", color: {rgb: "000000"}}} }},
+          {value: "", style: { border: { right: {style: "medium", color: {rgb: "000000"}}} }}
         );
       }
     });
@@ -205,22 +198,22 @@ const AdminCommands = () => {
     data[0].data.push([{value:""}]);
     data[0].data.push([{value:""}, {value:""}]);
 
-      dishes.forEach((dish, i) => {
-        let here = false;
-        for(let j = 0; j < nbDishes.length; j++) {
-          if(nbDishes[j]._id === dish.idDish._id) {
-            if(i === 0) data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
-            else data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
-            here = true;
-            break;
-          }
+    dishes.forEach((dish, i) => {
+      let here = false;
+      for(let j = 0; j < nbDishes.length; j++) {
+        if(nbDishes[j]._id === dish.idDish._id) {
+          if(i === 0) data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
+          else data[0].data[index+2].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
+          here = true;
+          break;
         }
+      }
 
-        if(!here) {
-          if(i === 0) data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
-          else data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
-        }
-    });
+      if(!here) {
+        if(i === 0) data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}} } }});
+        else data[0].data[index+2].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
+      }
+  });
 
     if(commands.length > 0) {
 

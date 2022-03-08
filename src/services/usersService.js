@@ -1,12 +1,9 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { config } from './config';
  
 const API_URL = process.env.REACT_APP_API_URL;
 
-
-const config = (token) => {
-    return { headers: {'x-access-token': token}};
-}
 
 // GET ---------------------------------------------------------------------------------------------------------------------------------------
 

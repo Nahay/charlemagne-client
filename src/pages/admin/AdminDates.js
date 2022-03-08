@@ -16,6 +16,8 @@ import {getDishes, createDishDate, getDishByDate, deleteAllDishesDate, deleteDis
 
 const AdminDates = () => {
 
+    const token = localStorage.getItem("adminToken");
+
     const ref = useRef(null);
     const box = useRef(null);
 
@@ -164,11 +166,11 @@ const AdminDates = () => {
     const saveDate = async () => {
 
         if (!dateExists) {
-            createDate(date, visibility, comment, timeMin, timeMax);
+            createDate(date, visibility, comment, timeMin, timeMax, token);
             setDateExists(true);
             getDateList();
         }
-        else updateDate(date, visibility, comment, timeMin, timeMax);
+        else updateDate(date, visibility, comment, timeMin, timeMax, token);
     }
 
     const deleteAndSetDate = async () => {
@@ -178,7 +180,7 @@ const AdminDates = () => {
         });
 
         if (!haveCommand) {
-            await deleteDate(date);
+            await deleteDate(date, token);
             await deleteAllDishesDate(date);
             await getDateList();
             onChangeDate(new Date(new Date().toDateString()).getTime());
@@ -215,7 +217,7 @@ const AdminDates = () => {
 
                 // la date n'existe pas : on la crée et on ajoute le plat
                 else {
-                    await createDate(date, visibility, comment, timeMin, timeMax);
+                    await createDate(date, visibility, comment, timeMin, timeMax, token);
                     setDateExists(true);
                     await createDishDate(date, select, nb);
                     getDishByDateList(date);
