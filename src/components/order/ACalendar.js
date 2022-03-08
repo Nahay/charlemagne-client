@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 
 
 const ACalendar = ({dateList, onDateChange, rightRef}) => {
+    const previousDate = localStorage.getItem('date');
 
     const executeScroll = () => {
         rightRef.current.scrollIntoView({ 
@@ -23,6 +24,7 @@ const ACalendar = ({dateList, onDateChange, rightRef}) => {
             onChange={(e) => onDateChange(e.getTime())}
             tileClassName={tileClassName}
             onClickDay={executeScroll}
+            defaultValue={typeof previousDate === "string" ? new Date(previousDate) : previousDate}
         />
      );
 }

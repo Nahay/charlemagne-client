@@ -57,6 +57,7 @@ const AdminCommands = () => {
   const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("adminToken");
     async function getCommandsByDate() {
       const commands = await getCommandByDate(date, token);
       setCommandsList(commands);
