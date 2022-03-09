@@ -28,7 +28,7 @@ const Login = () => {
         if (si.token) {
           // si il y est, on l'ajoute au local storage
           localStorage.setItem('userToken', si.token);
-          history.push("/commander");
+          history.goBack();
           const user = await getFirstNameByUsername(username);
           toast.success("Bienvenue " + user.userFound.firstname +" !");          
         }

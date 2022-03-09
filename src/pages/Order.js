@@ -20,11 +20,11 @@ const Order = () => {
   const [tableActive, setTableActive] = useState(true);
   const [date, setDate] = useState(new Date(new Date().toDateString()).getTime());
 
-  const previousDate = localStorage.getItem('date');
-
+  const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
+  console.log(previousDate);
   useEffect(() => {
-    const previousDate = localStorage.getItem('date');
-    
+    const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
+
     async function getSetDates() {      
       const dates = await getDatesByVisibility();
       setDatesList(dates);
@@ -81,7 +81,7 @@ const Order = () => {
           </div>
 
           { tableActive ?
-            <ACalendar rightRef={ref} dateList={dateList} onDateChange={onDateChange}/>
+            <ACalendar rightRef={ref} dateList={dateList} onDateChange={onDateChange} date={typeof previousDate === "string" ? new Date(previousDate) : previousDate}/>
           : 
             <List rightRef={ref} dateList={datesAndNb} onDateChange={onDateChange} />
           }
