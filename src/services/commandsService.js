@@ -5,7 +5,7 @@ import { config } from './config';
 const API_URL = process.env.REACT_APP_API_URL;
 
 
-const createCommand = async (user, dateC, timeC, paid, container, comment, total, token) => {
+const createCommand = async (user, dateC, timeC, paid, container, comment, total) => {
     try {
         const { data } = await axios.post(API_URL + "/commands", {
             user,
@@ -15,7 +15,7 @@ const createCommand = async (user, dateC, timeC, paid, container, comment, total
             container,
             comment,
             total
-        }, config(token));
+        });
         return data;
     } catch(err) {
         toast.error(err.message);
