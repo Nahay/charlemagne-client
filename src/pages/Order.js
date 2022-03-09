@@ -21,7 +21,7 @@ const Order = () => {
   const [date, setDate] = useState(new Date(new Date().toDateString()).getTime());
 
   const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
-  console.log(previousDate);
+  
   useEffect(() => {
     const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
 

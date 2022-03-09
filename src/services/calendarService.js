@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { config } from './config';
+import { adminConfig } from './config';
  
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -13,7 +13,7 @@ const createDate = async (dateC, visibility, comment, timeMin, timeMax, token) =
             comment, 
             timeMin,
             timeMax
-        }, config(token));
+        }, adminConfig(token));
         toast.success("La date a été créée !");
 
     } catch(err) {
@@ -65,7 +65,7 @@ const updateDate = async (date, visibility, comment, timeMin, timeMax, token) =>
                 comment,
                 timeMin,
                 timeMax
-            }, config(token)
+            }, adminConfig(token)
         );
         toast.success("La date a été mise à jour !");
     } catch(err) {
@@ -75,7 +75,7 @@ const updateDate = async (date, visibility, comment, timeMin, timeMax, token) =>
 
 const deleteDate = async (date, token) => {
     try {
-        await axios.delete(API_URL + "/calendar/" +date, config(token));
+        await axios.delete(API_URL + "/calendar/" +date, adminConfig(token));
         toast.success("Cette date a été supprimée !");
     } catch(err) {
         toast.error(err.message);

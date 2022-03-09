@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { config } from './config';
+import { adminConfig } from './config';
  
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,7 +15,7 @@ const createDish = async (name, price, description, type, token) => {
             description,
             type
         }
-        , config(token));
+        , adminConfig(token));
         toast.success(`Le plat ${data.name} a été créé !`);
 
     } catch(err) {
@@ -77,7 +77,7 @@ const updateDish = async (id, name, price, desc, type, token) => {
             description : desc,
             type: type,
         }
-        , config(token));
+        , adminConfig(token));
         if (data.modifiedCount > 0) toast.success(`Le plat a été mis à jour !`);
     }
     catch(err) {
@@ -87,7 +87,7 @@ const updateDish = async (id, name, price, desc, type, token) => {
 
 const hideDish = async (id, token) => {
     try {
-        const { data } = await axios.patch(API_URL + "/dishes/hide/" +id, {}, config(token));
+        const { data } = await axios.patch(API_URL + "/dishes/hide/" +id, {}, adminConfig(token));
         toast.success(`Le plat ${data.name} n'est plus visible !`);
         return data.type;
     }
@@ -98,7 +98,7 @@ const hideDish = async (id, token) => {
 
 const unhideDish = async (id, token) => {
     try {
-        const { data } = await axios.patch(API_URL + "/dishes/unhide/" +id, {}, config(token));
+        const { data } = await axios.patch(API_URL + "/dishes/unhide/" +id, {}, adminConfig(token));
         toast.success(`Le plat ${data.name} est à nouveau visible !`);
         return data.type;
     }
@@ -116,7 +116,7 @@ const createDishDate = async (dateC, idDish, numberKitchen, token) => {
             idDish,
             numberKitchen
         }
-        , config(token));
+        , adminConfig(token));
         toast.success("Le plat a été créé pour cette date !");
     } catch(err) {
         toast.error(err.message);
@@ -187,7 +187,7 @@ const updateDishDateQtt = async (dateC, idDish, numberRemaining, token) => {
                 idDish: idDish,
                 numberRemaining : numberRemaining
             }
-            , config(token));
+            , adminConfig(token));
         } catch(err) {
         toast.error(err.message);
     }
@@ -195,7 +195,7 @@ const updateDishDateQtt = async (dateC, idDish, numberRemaining, token) => {
 
 const deleteDishDate = async (id, token) => {
     try {
-        await axios.delete(API_URL + "/dish-date/id/" +id, config(token));
+        await axios.delete(API_URL + "/dish-date/id/" +id, adminConfig(token));
         toast.success("Le plat a été supprimé de cette date !");
     } catch(err) {
         toast.error(err.message);
@@ -204,7 +204,7 @@ const deleteDishDate = async (id, token) => {
 
 const deleteAllDishesDate = async (dateC, token) => {
     try {
-        const { data } = await axios.delete(API_URL + "/dish-date/date/"+dateC, config(token));
+        const { data } = await axios.delete(API_URL + "/dish-date/date/"+dateC, adminConfig(token));
         if (data.deletedCount !== 0) toast.success("Tous les plats de cette date ont été supprimés !");
     } catch(err) {
         toast.error(err.message);
