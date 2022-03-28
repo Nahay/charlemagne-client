@@ -49,7 +49,7 @@ const DayDetails = ({date, dishByDateList}) => {
                 <div className="day-details__button">
                     <div className="btn">
                         { isLogged ? 
-                            <Link to={`passer-commande/${date}`}>
+                            <Link to={`passer-commande/${date}`} onClick={() => localStorage.removeItem('date')}>
                                 Commander
                             </Link> 
                             :

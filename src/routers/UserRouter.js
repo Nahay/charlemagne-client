@@ -29,7 +29,7 @@ const UserTemp = () => {
                     <Route exact path="/commander" component = {Order} />
                     <ProtectedUserRoute exact path="/passer-commande/:date" component = {PassCommand} />
                     <Route exact path="/contact" component = {Contact} />
-                    <ProtectedUserRoute exact path="/history" component = {History} />
+                    <ProtectedUserRoute exact path="/historique" component = {History} />
                     <ProtectedLoginRoute exact path="/connexion" component = {Login}/>
 
                     {/* <Route exact path="/mentions-legales" component = {Home} />
