@@ -16,9 +16,12 @@ const DayDetails = ({date, dishByDateList}) => {
 
         async function getNb() {
             setIsAvailable(false);
+            
             dishByDateList.forEach(d => {
                 if (d.numberRemaining > 0) setIsAvailable(true);
             });
+            
+            if(new Date(date) < new Date(new Date().toDateString())) setIsAvailable(false);
         }
         
         async function getUser() {
@@ -39,7 +42,7 @@ const DayDetails = ({date, dishByDateList}) => {
             <h1 className="day-details__title">{moment(date).locale('fr').format('LL')}</h1>
             <Table dishByDateList={dishByDateList}/>
             
-            { isAvailable &&
+            { isAvailable ?
 
             <>
                 <div className="right__tip">
@@ -61,6 +64,13 @@ const DayDetails = ({date, dishByDateList}) => {
                 </div>
             </>
 
+            :
+            
+            <>
+                <div className="day-details__button" style={{color:'white'}}>
+                    Vous ne pouvez pas passer commande à cette date.
+                </div>
+            </>
             }
             
         </div>
