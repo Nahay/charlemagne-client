@@ -6,7 +6,7 @@ import { decodeToken } from "react-jwt";
 import { getUserById } from "../../../services/usersService";
 
 
-function ProtectedUserRoute({ component: Component, ...restOfProps }) {
+function ProtectedUserRoute({component: Component, ...restOfProps }) {
 
   const history = useHistory();
 
@@ -14,13 +14,23 @@ function ProtectedUserRoute({ component: Component, ...restOfProps }) {
 
     const token = localStorage.getItem("userToken");
     const decodedToken = decodeToken(token);
-    
+
+    const loc = history.location.pathname;
+
+    // s'il y a un token
     if (decodedToken !== null) {
         const user = await getUserById(decodedToken._id);
-        if (user.success) return true;
+        // connecté
+        if (user.success) {
+          // page login ou mdp déjà changé
+          if (loc === "/connexion" || (!decodedToken.firstConnection && loc === '/changer-mdp')) history.push('/');
+          return true;
+        }
     }
+
+    // pas connecté
     localStorage.removeItem('userToken');
-    history.push('/');
+    if (loc !== '/connexion') history.push('/');
     return false;
   }
 

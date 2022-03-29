@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { adminConfig } from './config';
+import { adminConfig, userConfig } from './config';
  
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -21,6 +21,7 @@ const getVisibleUsers = async(token) => {
         const { data } = await axios.get(API_URL + "/users/visible", adminConfig(token));
         return data;
     } catch(err) {
+        console.log(err);
         toast.error(err.message);
     }
 }
@@ -82,6 +83,17 @@ const updateUserNoPw = async (id, name, firstname, email, tel, token) => {
     }
 }
 
+const updateFirstConn = async (id, username, name, firstname, email, password, token) => {
+    try {
+        const { data } = await axios.patch(API_URL + "/users/first", { id, username, name, firstname, email, password }, userConfig(token));
+        toast.success("Le mot de passe a bien été changé !");
+        return data;
+        
+    } catch(err) {
+        toast.error(err.message);
+    }
+}
+
 const hideUser = async (id, token) => {
     try {
         await axios.patch(API_URL + "/users/hide/" +id, {visible: false}, adminConfig(token));
@@ -138,5 +150,6 @@ export {
     updateUser,
     updateUserNoPw,
     deleteUser,
-    deleteUserByUsername
+    deleteUserByUsername,
+    updateFirstConn
 }

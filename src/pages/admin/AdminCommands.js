@@ -13,7 +13,7 @@ import CommandsList from "../../components/admin/CommandsList";
 import DishCommandList from "../../components/admin/DishCommandList";
 
 import { getDates } from "../../services/calendarService";
-import { hideCommand, deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay, downloadReport} from "../../services/commandsService";
+import { deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay, downloadReport} from "../../services/commandsService";
 import { deleteCommandList, updateQuantity, getCommandListById } from "../../services/commandsListService";
 import { updateDishDateQtt, getDishByDateAndDish, getDishById, updateDishDate, getDishByDate } from "../../services/dishesService";
 
@@ -47,18 +47,13 @@ const AdminCommands = () => {
   const [dishList, setDishList] = useState([]);
   const [dateList, setDatesList] = useState([]);
   const [commandsList, setCommandsList] = useState([]);
-  const [visibleCommandsList, setVisibleCommandsList] = useState([]);
   const [pastDate, setPastDate] = useState(false);
-
-  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     async function getCommandsByDate() {
       const commands = await getCommandByDate(date, token);
       setCommandsList(commands);
-      const visibleCommands = commands.filter((c) => c.visible);
-      setVisibleCommandsList(visibleCommands);
     };
 
     getDateList();
@@ -73,9 +68,6 @@ const AdminCommands = () => {
   const getCommandsByDate = async () => {
     const commands = await getCommandByDate(date, token);
     setCommandsList(commands);
-
-    const visibleCommands = commands.filter((c) => c.visible);
-    setVisibleCommandsList(visibleCommands);
   };
 
   const formatCsvData = async (e) => { 
@@ -171,10 +163,15 @@ const AdminCommands = () => {
     setDishClicked(true);
   }
 
-  // suppression de la commande (invisible)
-  const handleHideCommand = async () => {
+  // suppression de la commande
+  const handleDeleteCommand = async () => {
 
-    await hideCommand(currentDelete, token);
+    await deleteCommand(currentDelete, token);
+
+    for (const c of commandsList[0].list) {
+      await updateDishDateQtt(date, c.dishID._id, c.quantity, token);
+      await deleteCommandList(c._id, token);
+    }
     
     getCommandsByDate();
     resetInput();
@@ -328,7 +325,7 @@ const AdminCommands = () => {
   return (
     <div className="admin-commands">
 
-      <Box onClickConfirmation={removeBoxCommand} onClickDelete={handleHideCommand} boxRef={boxCommand} message="Voulez-vous vraiment supprimer cette commande ?"/>
+      <Box onClickConfirmation={removeBoxCommand} onClickDelete={handleDeleteCommand} boxRef={boxCommand} message="Voulez-vous vraiment supprimer cette commande ?"/>
       <Box onClickConfirmation={removeBoxCommandList} onClickDelete={handleDeleteCommandList} boxRef={boxCommandList} message="Voulez-vous vraiment supprimer ce plat de cette commande ?"/>
 
       <div className="admin-commands__left">
@@ -354,7 +351,7 @@ const AdminCommands = () => {
         </h1>
         <div className="commands-list">
           <CommandsList
-            commandsListByDate={visibleCommandsList}
+            commandsListByDate={commandsList}
             onClickCommand={onClickCommand}
             onClickDelete={onClickCommandDelete}
           />

@@ -58,7 +58,13 @@
             .input, .input-email {
                 &:first-child { margin-bottom: 3px }
             }
-    
+
+            .content__title {
+                color: var(--svg-color);
+                margin-bottom: 15%;
+                text-align: center;
+            }
+
             .content__password {
                 position: relative;
 
@@ -103,7 +109,7 @@
             }
             
             .input-btn {
-                width: 50%;
+                width: 60%;
                 margin-top: 30px;
                 z-index: 1;
     
