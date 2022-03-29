@@ -77,11 +77,10 @@ const getNbOfDishByDay = async (dateC, token) => {
     }
 }
 
-const downloadReport = async (dishList, nbDishes, commandList, dateFormated, date, comment) => {
+const downloadReport = async (dishList, commandList, dateFormated, date, comment) => {
     try { 
         const { data } = await axios.get(API_URL + "/commands/download", { responseType: 'arraybuffer', params: {
             dishList, 
-            nbDishes, 
             commandList,
             dateFormated,
             date, 

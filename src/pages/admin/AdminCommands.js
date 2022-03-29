@@ -268,13 +268,8 @@ const AdminCommands = () => {
 
   const onClickDownload = async () => {
     const dishes = await getDishByDate(date);
-    const nbDishes = await getNbOfDishByDay(date, token);
     const commands = await getCommandByDate(date, token);
-
-
-    await downloadReport(dishes, nbDishes, commands, moment(date).format("DD/MM/YYYY"), moment(date).format("DD-MM-YYYY"), dateComment);
-    console.log({dishes, nbDishes, commands});
-    
+    await downloadReport(dishes, commands, moment(date).format("DD/MM/YYYY"), moment(date).format("DD-MM-YYYY"), dateComment);    
   }
 
   // RENDER ----------------------------------------------------------------
