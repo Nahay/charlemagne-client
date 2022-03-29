@@ -47,11 +47,14 @@ const AdminAccounts = () => {
 
         async function getClientAccountList() {
             const clients = await getVisibleUsers(token);
+            console.log({clients});
             setClientAccountList(clients.users);
         }
     
         async function getAdminAccountList() {
             const admins = await getAdmins(token);
+            console.log({admins});
+
             setAdminAccountList(admins.admins);
         }
 
