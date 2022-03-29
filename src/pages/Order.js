@@ -20,10 +20,11 @@ const Order = () => {
   const [tableActive, setTableActive] = useState(true);
   const [date, setDate] = useState(new Date(new Date().toDateString()).getTime());
 
-  const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
+  const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date(new Date().toDateString());
   
   useEffect(() => {
-    const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date();
+    const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date(new Date().toDateString());
+    console.log(previousDate);
 
     async function getSetDates() {      
       const dates = await getDatesByVisibility();
@@ -33,7 +34,7 @@ const Order = () => {
       setDatesAndNb(datesWithNb);
       
       if(previousDate !== null) {
-        await getDishByDateList(typeof previousDate === "string" ? new Date(previousDate).getTime() : previousDate);
+        await getDishByDateList(typeof previousDate === "string" ? new Date(previousDate).getTime() : previousDate.getTime());
       }
       else await getDishByDateList(date);
     }
