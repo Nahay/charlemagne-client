@@ -123,6 +123,7 @@ const deleteCommand = async (id, token) => {
 
 export {
     createCommand,
+    downloadReport,
     getCommands,
     getCommandByDate,
     getCommandByUser,
