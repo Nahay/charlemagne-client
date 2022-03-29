@@ -283,6 +283,11 @@ const AdminCommands = () => {
   const handleDeleteCommand = async () => {
 
     await deleteCommand(currentDelete, token);
+
+    for (const c of commandsList[0].list) {
+      await updateDishDateQtt(date, c.dishID._id, c.quantity, token);
+      await deleteCommandList(c._id, token);
+    }
     
     getCommandsByDate();
     resetInput();
