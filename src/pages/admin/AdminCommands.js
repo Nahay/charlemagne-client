@@ -12,7 +12,7 @@ import Box from "../../components/generic/Box";
 import CommandsList from "../../components/admin/CommandsList";
 import DishCommandList from "../../components/admin/DishCommandList";
 
-import { getDates } from "../../services/calendarService";
+import { getDateByDate, getDates } from "../../services/calendarService";
 import { deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay, downloadReport} from "../../services/commandsService";
 import { deleteCommandList, updateQuantity, getCommandListById } from "../../services/commandsListService";
 import { updateDishDateQtt, getDishByDateAndDish, getDishById, updateDishDate, getDishByDate } from "../../services/dishesService";
@@ -27,6 +27,7 @@ const AdminCommands = () => {
   const boxCommandList = useRef(null);
 
   const [date, setDate] = useState(new Date(new Date().toDateString()).getTime());
+  const [dateComment, setDateComment] = useState("");
 
   const [id, setId] = useState("");
   const [commandId, setCommandId] = useState("");
@@ -56,9 +57,20 @@ const AdminCommands = () => {
       setCommandsList(commands);
     };
 
+    async function getDateComment() {
+      const d = await getDateByDate(date);
+      setDateComment(d.comment);
+    }
+
+    getDateComment();
     getDateList();
     getCommandsByDate();
   }, [date]);
+
+  const getDateComment = async (e) => {
+    const d = await getDateByDate(e);
+    setDateComment(d.comment);
+  }
 
   const getDateList = async () => {
     const dates = await getDates();
@@ -70,61 +82,6 @@ const AdminCommands = () => {
     setCommandsList(commands);
   };
 
-  const formatCsvData = async (e) => { 
-    const dishes = await getDishByDate(e);
-    const nbDishes = await getNbOfDishByDay(e, token);
-    const commands = await getCommandByDate(e, token);
-    
-    let data = [ { columns: [], data: [] }];
-
-    data[0].columns.push(
-      {title: "#", width: {wpx: 50}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
-      {title: "Nom", width: {wpx: 100}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }
-    );
-
-    dishes.forEach(d => {
-      data[0].columns.push({title: `${d.idDish.name}`, width: {wpx: 100}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} }});
-    });
-
-    data[0].columns.push(
-      {title: "Montant", width: {wpx: 75}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
-    
-      {title: "Boite", width: {wpx: 75}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } },
-
-      {title: "Heure", width: {wpx: 80}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true},  alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } },
-
-      {title: "", width: {wpx: 55}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {left: {style: "medium", color: {rgb: "000000"}} } } },
-      
-      {title: "Paiement", width: {wpx: 65}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}}},
-
-      {title: "", width: {wpx: 55}, style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment:  {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "0000000"}}} } },
-
-      {title: "Commentaires", width: {wpx: 200}, style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "000000"}}} } }
-    );
-
-    data[0].data.push([
-      {value: "", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } },
-      {value: "", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }
-    ]);
-
-    data[0].data[0].push(
-      {value: "en €", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
-    
-      {value: "perso", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold:   true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } }, 
-
-      {value: "de retrait", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb:  "D4D4D4"}}} } },
-
-      {value: "CB", style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {left: {style: "medium", color: {rgb: "000000"}} } } },
-      
-      {value: "Espèce", style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true} } }, 
-
-      {value: "Chèque", style: { font: {bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "0000000"}}} } }, 
-
-      {value: "", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "000000"}}} } }
-    );
-
-  }
-
   const getDishList = async (commandId) => {
     const d = commandsList.filter((d) => d._id === commandId)[0].list;
     setDishList(d);
@@ -132,9 +89,9 @@ const AdminCommands = () => {
 
   const onChangeDate = async (e) => {
     setDate(e);
+    getDateComment(e);
     resetInput();
     getCommandsByDate();
-    formatCsvData(e);
     setDishClicked(false);
     setPastDate(e < new Date(new Date().toDateString()).getTime());
   }
@@ -315,7 +272,7 @@ const AdminCommands = () => {
     const commands = await getCommandByDate(date, token);
 
 
-    await downloadReport(dishes, nbDishes, commands, moment(date).format("DD/MM/YYYY"), moment(date).format("DD-MM-YYYY"), comment);
+    await downloadReport(dishes, nbDishes, commands, moment(date).format("DD/MM/YYYY"), moment(date).format("DD-MM-YYYY"), dateComment);
     console.log({dishes, nbDishes, commands});
     
   }
