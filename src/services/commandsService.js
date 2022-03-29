@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import FileDownload from "js-file-download";
 import { adminConfig, userConfig } from './config';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -85,6 +86,23 @@ const getNbOfDishByDay = async (dateC, token) => {
     }
 }
 
+const downloadReport = async (dishList, nbDishes, commandList, dateFormated, date, comment) => {
+    try { 
+        const { data } = await axios.get(API_URL + "/commands/download", { responseType: 'arraybuffer', params: {
+            dishList, 
+            nbDishes, 
+            commandList,
+            dateFormated,
+            date, 
+            comment
+        }});
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        FileDownload(blob, "RAPPORT-" + date +".xlsx");
+    } catch(err) {
+        toast.error(err.message);
+    }
+}
+
 const updateCommand = async (id, timeC, paid, container, comment, total, token) => {
     try {
         await axios.patch(
@@ -130,5 +148,6 @@ export {
     getNbOfDishByDay,
     updateCommand,
     hideCommand,
-    deleteCommand
+    deleteCommand,
+    downloadReport
 };

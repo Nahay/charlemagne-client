@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
 import "moment/locale/fr";
-import ReactExport from 'react-data-export';
 
 import InputText from "../../components/generic/InputText";
 import TextArea from "../../components/generic/TextArea";
@@ -13,8 +12,8 @@ import Box from "../../components/generic/Box";
 import CommandsList from "../../components/admin/CommandsList";
 import DishCommandList from "../../components/admin/DishCommandList";
 
-import { getDateByDate, getDates } from "../../services/calendarService";
-import { hideCommand, deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay } from "../../services/commandsService";
+import { getDates } from "../../services/calendarService";
+import { hideCommand, deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay, downloadReport} from "../../services/commandsService";
 import { deleteCommandList, updateQuantity, getCommandListById } from "../../services/commandsListService";
 import { updateDishDateQtt, getDishByDateAndDish, getDishById, updateDishDate, getDishByDate } from "../../services/dishesService";
 
@@ -26,9 +25,6 @@ const AdminCommands = () => {
   const ref = useRef(null);
   const boxCommand = useRef(null);
   const boxCommandList = useRef(null);
-  
-  const ExcelFile = ReactExport.ExcelFile;
-  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
   const [date, setDate] = useState(new Date(new Date().toDateString()).getTime());
 
@@ -119,10 +115,6 @@ const AdminCommands = () => {
       {value: "", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center"}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }
     ]);
 
-    dishes.forEach(d => {
-      data[0].data[0].push({value: parseInt(d.idDish.price), style: {numFmt: "0.00€",fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} }});
-    });
-
     data[0].data[0].push(
       {value: "en €", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "thin", color: {rgb: "D4D4D4"}}} } }, 
     
@@ -138,113 +130,7 @@ const AdminCommands = () => {
 
       {value: "", style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: {right: {style: "medium", color: {rgb: "000000"}}} } }
     );
-    
-    let index = 0;
-    let total = 0;
 
-    commands.forEach((command, i) => {
-      total += command.total;
-      index = i;
-
-      if((i+1) === commands.length) {
-        data[0].data.push([
-          {value: i+1,  style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "thin", color: {rgb: "D4D4D4"} }, top: { style: "thin", color: {rgb: "D4D4D4"}}} }},
-
-          {value: command.user.name,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }}
-        ]);
-
-        dishes.forEach(dish => {
-          let here = false;
-          for(let j = 0; j < command.list.length; j++) {
-            if(command.list[j].dishID._id === dish.idDish._id){
-              data[0].data[i+1].push({value: command.list[j].quantity,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }});
-              here = true;
-              break;
-            }
-          }
-          !here && data[0].data[i+1].push({value: 0,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }});
-        });
-
-        data[0].data[i+1].push({value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }});
-
-        command.container ? 
-          data[0].data[i+1].push({value: "✔", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}}  }})
-        : 
-          data[0].data[i+1].push({value: "❌", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }});
-        
-        data[0].data[i+1].push(
-          {value: command.timeC,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-            
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, left: { style: "medium", color: {rbg: "000000"}}} }},
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}} }},
-          {value: "", style: {border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}} }},
-          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}}, right: { style: "medium", color: {rbg: "000000"}}}  }}
-        );
-      }
-      else {
-        data[0].data.push([
-          {value: i+1,  style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText:true}, border: { right: { style: "thin", color: {rgb: "D4D4D4"} }, top: { style: "thin", color: {rgb: "D4D4D4"}}} }},
-
-          {value: command.user.name,  style: {alignment: {horizontal: "center", vertical: "center", wrapText:true}}}
-        ]);
-
-        dishes.forEach(dish => {
-          let here = false;
-          for(let j = 0; j < command.list.length; j++) {
-            if(command.list[j].dishID._id === dish.idDish._id){
-              data[0].data[i+1].push({value: command.list[j].quantity,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }});
-              here = true;
-              break;
-            }
-          }
-          !here && data[0].data[i+1].push({value: 0,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }});
-        });
-
-        data[0].data[i+1].push({value: parseInt(command.total + "€"), style: {numFmt: "0.00€", alignment: {horizontal: "right", vertical: "center", wrapText: true} }});
-
-        command.container ? 
-          data[0].data[i+1].push({value: "✔", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }})
-        : 
-          data[0].data[i+1].push({value: "❌", style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }});
-        
-        data[0].data[i+1].push(
-          {value: command.timeC,  style: {alignment: {horizontal: "center", vertical: "center", wrapText: true} }},
-
-          {value: "", style: {border: { left: { style: "medium", color: {rbg: "000000"}}}}},
-          {value: ""},
-          {value: "", style: {border: { right: { style: "medium", color: {rbg: "000000"}}}}},
-
-          {value: command.comment,  style: {font: {sz: "8"}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { right: {style: "medium", color: {rgb: "000000"}}} }}
-        );
-      }
-    });
-    
-    data[0].data.push([{value:""}]);
-    data[0].data.push([ {value:""}, {value:"Totaux",style: {fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { top: {style: "medium", color: {rgb: "000000"}}, bottom: {style: "medium", color: {rgb: "000000"}}, left: {style: "medium", color: {rgb: "000000"}}, right: {style: "thin", color: {rgb: "D4D4D4"}} } } }]);
-
-    dishes.forEach((dish) => {
-      let here = false;
-      for(let j = 0; j < nbDishes.length; j++) {
-        if(nbDishes[j]._id === dish.idDish._id) {
-          data[0].data[index+3].push({value: nbDishes[j].nb, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
-          here = true;
-          break;
-        }
-      }
-
-      if(!here && commands.length > 0) {
-        data[0].data[index+3].push({value: 0, style: {font: {bold: true}, alignment: {horizontal: "center", vertical: "center", wrapText: true}, border: { bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}} } }});
-      }
-  });
-
-    if(commands.length > 0) {
-      data[0].data[index+3].push({value: parseInt(total + "€"), style: {numFmt: "0.00€", font: {sz: "14", bold: true}, fill: {patternType: "solid", fgColor: {rgb: "FFCCEEFF"}}, alignment: {horizontal: "right", vertical: "center", wrapText: true}, border: { right: {style: "medium", color: {rgb: "000000"}},  bottom: {style: "medium", color: {rgb: "000000"}},  top: {style: "medium", color: {rgb: "000000"}},  left: {style: "thin", color: {rgb: "D4D4D4"}}} }}, {value: ""}, {value: ""}, {value: ""}, {value: ""});
-
-      const currentDate = await getDateByDate(e);
-      data[0].data.push([{value: "" }, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: ""}, {value: currentDate.comment, style: {font: {sz: "8"}}}]);
-    }
-
-    setCsvData(data);
   }
 
   const getDishList = async (commandId) => {
@@ -426,6 +312,17 @@ const AdminCommands = () => {
   }
 
 
+  const onClickDownload = async () => {
+    const dishes = await getDishByDate(date);
+    const nbDishes = await getNbOfDishByDay(date, token);
+    const commands = await getCommandByDate(date, token);
+
+
+    await downloadReport(dishes, nbDishes, commands, moment(date).format("DD/MM/YYYY"), moment(date).format("DD-MM-YYYY"), comment);
+    console.log({dishes, nbDishes, commands});
+    
+  }
+
   // RENDER ----------------------------------------------------------------
 
   return (
@@ -445,9 +342,7 @@ const AdminCommands = () => {
           { commandsList.length > 0 &&
           
           <div className="csv__download">
-                <ExcelFile filename={`RAPPORT-${moment(date).format("DD-MM-YYYY")}`} element={<button>Télécharger le rapport</button>}>
-                    <ExcelSheet dataSet={csvData} name={`RAPPORT-${moment(date).format("DD-MM-YYYY")}`}/>
-                </ExcelFile>
+            <button onClick={onClickDownload}>Télécharger le rapport</button>
           </div>
           }
         </div>
