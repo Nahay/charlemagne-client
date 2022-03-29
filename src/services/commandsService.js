@@ -31,15 +31,6 @@ const getCommands = async (token) => {
     }
 };
 
-const getVisibleCommands = async (token) => {
-    try {
-        const { data } = await axios.get(API_URL + "/commands/visible", adminConfig(token));
-        return data;
-    } catch(err) {
-        toast.error(err.message);
-    }
-};
-
 const getCommandByDate = async (dateC, token) => {
     try {
         const { data } = await axios.get(API_URL + "/commands/" +dateC, adminConfig(token));
@@ -102,15 +93,6 @@ const updateCommand = async (id, timeC, paid, container, comment, total, token) 
     }
 };
 
-const hideCommand = async (id, token) => {
-    try {
-        await axios.patch(API_URL + "/commands/hide/" + id, {}, adminConfig(token));
-        toast.success("La commande a été supprimée !");
-    } catch(err) {
-        toast.error(err.message);
-    }
-};
-
 const deleteCommand = async (id, token) => {
     try {
         await axios.delete(API_URL + "/commands/" +id, adminConfig(token));
@@ -124,11 +106,9 @@ const deleteCommand = async (id, token) => {
 export {
     createCommand,
     getCommands,
-    getVisibleCommands,
     getCommandByDate,
     getCommandByUser,
     getNbOfDishByDay,
     updateCommand,
-    hideCommand,
     deleteCommand
 };
