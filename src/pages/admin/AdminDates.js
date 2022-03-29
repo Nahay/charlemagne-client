@@ -345,7 +345,7 @@ const AdminDates = () => {
                         </div>
 
                         <div className="select-container">
-                            <input value={select} className="dish-select" type="text" list="list" onChange={handleSelectChange} />
+                            <input value={select} placeholder="Chercher un plat..." className="dish-select" type="text" list="list" onChange={handleSelectChange} />
                             <datalist id="list">
                                 {
                                     dishList.map((d) => {
