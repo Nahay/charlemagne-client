@@ -93,7 +93,14 @@ const AdminCommands = () => {
     resetInput();
     getCommandsByDate();
     setDishClicked(false);
-    setPastDate(e < new Date(new Date().toDateString()).getTime());
+
+    // déclaration de la date actuelle
+    let todayMinusOne = new Date(new Date().toDateString());
+    // transformation de la date en jour - 1
+    todayMinusOne.setDate(todayMinusOne.getDate() - 1);
+    // déclare une nouvelle date sous le format int
+    todayMinusOne = todayMinusOne.getTime();
+    setPastDate(e < todayMinusOne);
   }
 
   const onClickCommand = (d) => {
