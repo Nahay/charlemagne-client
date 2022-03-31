@@ -13,7 +13,7 @@ import CommandsList from "../../components/admin/CommandsList";
 import DishCommandList from "../../components/admin/DishCommandList";
 
 import { getDateByDate, getDates } from "../../services/calendarService";
-import { deleteCommand, getCommandByDate, updateCommand, getNbOfDishByDay, downloadReport} from "../../services/commandsService";
+import { deleteCommand, getCommandByDate, updateCommand, downloadReport} from "../../services/commandsService";
 import { deleteCommandList, updateQuantity, getCommandListById } from "../../services/commandsListService";
 import { updateDishDateQtt, getDishByDateAndDish, getDishById, updateDishDate, getDishByDate } from "../../services/dishesService";
 
@@ -59,7 +59,6 @@ const AdminCommands = () => {
 
     async function getDateComment() {
       const d = await getDateByDate(date);
-      console.log(d);
       d && setDateComment(d.comment);
     }
 

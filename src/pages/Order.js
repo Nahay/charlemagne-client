@@ -24,7 +24,6 @@ const Order = () => {
   
   useEffect(() => {
     const previousDate = !isNaN(Date.parse(localStorage.getItem('date'))) && isNaN((localStorage.getItem('date'))) ? localStorage.getItem('date') : new Date(new Date().toDateString());
-    console.log(previousDate);
 
     async function getSetDates() {      
       const dates = await getDatesByVisibility();
