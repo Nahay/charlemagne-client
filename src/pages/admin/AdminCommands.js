@@ -59,7 +59,8 @@ const AdminCommands = () => {
 
     async function getDateComment() {
       const d = await getDateByDate(date);
-      setDateComment(d.comment);
+      console.log(d);
+      d && setDateComment(d.comment);
     }
 
     getDateComment();
@@ -69,7 +70,7 @@ const AdminCommands = () => {
 
   const getDateComment = async (e) => {
     const d = await getDateByDate(e);
-    setDateComment(d.comment);
+    d && setDateComment(d.comment);
   }
 
   const getDateList = async () => {
