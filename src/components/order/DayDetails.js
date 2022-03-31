@@ -33,7 +33,7 @@ const DayDetails = ({date, dishByDateList}) => {
         
         getUser();
         getNb();
-        console.log("ok");
+    
     }, [date, dishByDateList]);
 
 
