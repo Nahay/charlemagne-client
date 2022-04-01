@@ -430,31 +430,6 @@ const AdminCommands = () => {
             <div className="input-btn---save">
               <InputButton value="Enregistrer" type="submit" />
             </div> }
-           
-
-            {/* <div className="container_radio_duo">
-              <div className="right__form__radio" onChange={handlePaidChange}>
-                <span>Payée ?</span>
-                <input
-                  type="radio"
-                  value="Non"
-                  name="paid"
-                  id="n---paid"
-                  checked={paid === false}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="n---paid">Non</label>
-                <input
-                  type="radio"
-                  value="Oui"
-                  name="paid"
-                  id="y---paid"
-                  checked={paid === true}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="y---paid">Oui</label>
-              </div>
-            </div> */}
             
           </form>
         </div>
