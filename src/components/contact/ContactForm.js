@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { toast } from 'react-toastify';
 import { decodeToken } from "react-jwt";
-// import emailjs from 'emailjs-com';
+import emailjs from 'emailjs-com';
 
 import InputText from '../generic/InputText';
 import InputButton from '../generic/InputButton';
