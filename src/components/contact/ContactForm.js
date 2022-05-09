@@ -65,7 +65,7 @@ const ContactForm = () => {
         e.preventDefault();
         if (emailReg.test(email)) {
             if (Number(answer) === captcha[0]+captcha[1]) {
-                // emailjs.sendForm('service_yp9mjg9', 'lycee_template', form.current, 'user_kJVhkhpgVxlSmIHEaC2pI');
+                emailjs.sendForm('service_qz5w6s9', 'template_qyiljjj', form.current, 'GBsksuAs6GbxLPPGX');
                 toast.success("Votre message a été envoyé avec succès !");
                 resetValues();
             }
